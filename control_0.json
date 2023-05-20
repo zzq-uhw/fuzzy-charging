@@ -1,0 +1,48 @@
+{
+  "name": "control_0",
+  "core_type": "zmq",
+  "log_level": "warning",
+  "period": 1800,
+  "uninterruptible": false,
+  "terminate_on_error": true,
+  "wait_for_current_time_update": false,
+  "publications": [
+    {
+      "required": true,
+      "global": true,
+      "key": "pout_0",
+      "type": "double",
+      "unit": "VA"
+    },
+    {
+      "required": true,
+      "global": true,
+      "key": "price_0",
+      "type": "double",
+      "unit": "pu"
+    }
+  ],
+  "subscriptions": [
+    {
+      "required": true,
+      "global": true,
+      "key": "power_0",
+      "type": "double",
+      "unit": "VA"
+    },
+    {
+      "required": true,
+      "global": true,
+      "key": "soc_0",
+      "type": "double",
+      "unit": "pu"
+    },
+    {
+      "required": true,
+      "global": true,
+      "key": "energy_0",
+      "type": "double",
+      "unit": "kWh"
+    }
+  ]
+}

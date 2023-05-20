@@ -1,0 +1,5 @@
+(helics_broker -t="zmq" --federates=4 --name=mainbroker &> ./broker.log &)
+(exec python control_0.py &> ./control_0.log &)
+(gridlabd glm_0.glm &> ./glm_0.log &)
+(exec python control_1.py &> ./control_1.log &)
+(gridlabd glm_1.glm &> ./glm_1.log &)

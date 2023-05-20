@@ -1,0 +1,2 @@
+ERROR    [INIT] : unable to load 'glm_1.glm': No such file or directory
+FATAL    [INIT] : shutdown after command line rejected

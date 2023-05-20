@@ -1,0 +1,18 @@
+{
+  "name": "new_para",
+  "core_type": "zmq",
+  "log_level": "warning",
+  "period": 1800,
+  "uninterruptible": false,
+  "terminate_on_error": true,
+  "wait_for_current_time_update": true,
+  "subscriptions": [
+    {
+      "required": true,
+      "global": true,
+      "key": "price_0",
+      "type": "double",
+      "unit": "pu"
+    }
+  ]
+}

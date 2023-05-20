@@ -1,0 +1,693 @@
+module powerflow {
+     solver_method NR;
+     NR_iteration_limit 50;
+};
+module tape;
+module climate;
+module residential{
+	implicit_enduses NONE;
+};
+module generators;
+
+#include "../../Shared Model Files/appliance_schedules.glm";
+
+object climate {
+	name "Spokane WA";
+	tmyfile "../../Shared Model Files/WA-Spokane-24157.tmy2";
+	interpolate LINEAR;
+}
+
+schedule load_schedule_1 {
+	0-29 * * * * 3000
+	30-59 * * * * 3000
+}
+
+schedule load_schedule_2 {
+	0-14 * * * * 3000
+	15-44 * * * * 3000
+	45-59 * * * * 3000
+}
+
+clock {
+     timezone PST+8PDT;
+     starttime '2009-08-08 04:30:00';
+     stoptime '2009-08-09 04:30:00';
+}
+
+#set minimum_timestep=60.000000;
+#set profiler=1;
+#set relax_naming_rules=1;
+#set randomseed=10;
+#set suppress_repeat_messages=True;
+
+module connection;
+object helics_msg {
+  name glm_0;
+  configure glm_0.json;
+}
+
+
+object line_configuration {
+      name line_configuration_1;
+      conductor_A overhead_line_conductor_1;
+      conductor_B overhead_line_conductor_1;
+      conductor_C overhead_line_conductor_1;
+      conductor_N overhead_line_conductor_1;
+      spacing line_spacing_1;
+}
+
+
+object line_spacing {
+      name line_spacing_1;
+      distance_AB 57.6 in;
+      distance_BC 57.6 in;
+      distance_AC 57.6 in;
+      distance_AN 51.6 in;
+      distance_BN 51.6 in;
+      distance_CN 51.6 in;
+}
+
+object overhead_line_conductor {
+      name overhead_line_conductor_1;
+      rating.summer.continuous 256.0;
+      geometric_mean_radius 0.01200 ft;
+      resistance 0.1;
+}
+
+object transformer_configuration {
+    	name substation_transformer_config;
+    	connect_type WYE_WYE;
+     	install_type PADMOUNT;
+     	primary_voltage 110000;
+     	secondary_voltage 20000;
+     	power_rating 8.4 MVA;
+     	impedance 0.00033+0.0022j;
+}
+
+object node {
+	name feeder_head;
+	bustype SWING;
+	phases ABCN;
+    nominal_voltage 110000;
+}
+
+object transformer {
+     name substation_transformer1;
+     from feeder_head;
+     to meter2;
+     phases ABCN;
+     configuration substation_transformer_config;
+}
+object transformer {
+     name substation_transformer2;
+     from feeder_head;
+     to meter13;
+     phases ABCN;
+     configuration substation_transformer_config;
+}
+
+object meter {
+      name meter2;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter3;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter4;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter5;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter6;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter7;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter8;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter9;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter10;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter11;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter12;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter13;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter14;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+object meter {
+      name meter15;
+      phases ABCN;
+      nominal_voltage 20000;
+}
+
+object overhead_line {
+      name line2_3;
+      phases ABCN;
+      from meter2;
+      to meter3;
+      length 2.8 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line3_4;
+      phases ABCN;
+      from meter3;
+      to meter4;
+      length 4.4 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line4_5;
+      phases ABCN;
+      from meter4;
+      to meter5;
+      length 0.6 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line4_9;
+      phases ABCN;
+      from meter4;
+      to meter9;
+      length 1.3 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line5_6;
+      phases ABCN;
+      from meter5;
+      to meter6;
+      length 0.6 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line6_7;
+      phases ABCN;
+      from meter6;
+      to meter7;
+      length 1.5 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line8_9;
+      phases ABCN;
+      from meter8;
+      to meter9;
+      length 1.7 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line9_10;
+      phases ABCN;
+      from meter9;
+      to meter10;
+      length 0.3 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line10_11;
+      phases ABCN;
+      from meter10;
+      to meter11;
+      length 0.8 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line11_12;
+      phases ABCN;
+      from meter11;
+      to meter12;
+      length 0.3 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line13_14;
+      phases ABCN;
+      from meter13;
+      to meter14;
+      length 4.9 km;
+      configuration line_configuration_1;
+}
+object overhead_line {
+      name line14_15;
+      phases ABCN;
+      from meter14;
+      to meter15;
+      length 3.0 km;
+      configuration line_configuration_1;
+}
+
+
+object load {
+     parent meter4;
+     name load4;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_1;
+}
+object load {
+     parent meter5;
+     name load5;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_1;
+}
+object load {
+     parent meter6;
+     name load6;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_1;
+}
+object load {
+     parent meter7;
+     name load7;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_1;
+}
+object load {
+     parent meter9;
+     name load9;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_1;
+}
+object load {
+     parent meter11;
+     name load11;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_1;
+}
+object load {
+     parent meter12;
+     name load12;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_1;
+}
+object load {
+     parent meter15;
+     name load15;
+     nominal_voltage 20000;
+     phases ABC;
+	constant_power_A load_schedule_2;
+}
+
+
+// added in 2022_07_01
+
+object triplex_line_conductor {
+      name Name_1_0_AA_triplex;
+      resistance 0.57;
+      geometric_mean_radius 0.0111;
+}
+
+object triplex_line_configuration {
+      name triplex_line_config;
+      conductor_1 Name_1_0_AA_triplex;
+      conductor_2 Name_1_0_AA_triplex;
+      conductor_N Name_1_0_AA_triplex;
+      insulation_thickness 0.1;
+      diameter 0.4;
+}
+
+object triplex_line {
+     name meter5_tl_solar;
+     from meter5_house_node;
+     to meter5_solar_meter;
+     phases AS;
+     length 10;
+     configuration triplex_line_config;
+}
+
+object triplex_meter {     
+     name meter5_solar_meter;
+     phases AS;
+     nominal_voltage 124.00;     
+} 
+
+object inverter {
+	name meter5_solar_inv;
+	phases AS;
+	parent meter5_solar_meter;
+	generator_status ONLINE;
+	inverter_type FOUR_QUADRANT;
+    four_quadrant_control_mode CONSTANT_PF;
+    generator_mode SUPPLY_DRIVEN;
+    inverter_efficiency .95;
+	rated_power 6000;
+}
+
+object solar {
+	name meter5_solar;
+	phases AS;
+	parent meter5_solar_inv;
+	generator_status ONLINE;
+	generator_mode SUPPLY_DRIVEN;
+	panel_type SINGLE_CRYSTAL_SILICON;
+	area 250 ft^2;
+	tilt_angle 47.0;
+	efficiency 0.135;
+	orientation_azimuth 180; //equator-facing (South)
+	orientation FIXED_AXIS;
+	SOLAR_TILT_MODEL SOLPOS;
+	SOLAR_POWER_MODEL FLATPLATE;
+}
+
+object triplex_meter {     
+     name meter5_house_node;
+     phases AS;
+     nominal_voltage 124.00;     
+} 
+
+object transformer {
+     name meter5_house_trans;
+     phases AS;
+     from meter5;
+     to meter5_house_node;
+     configuration house_transformer;
+}
+
+object transformer_configuration {
+     name house_transformer;
+     connect_type SINGLE_PHASE_CENTER_TAPPED;
+     install_type PADMOUNT;
+     primary_voltage 20000 V;
+     secondary_voltage 134 V;
+     power_rating 250;
+     powerA_rating 250;
+     impedance 0.015+0.0675j;
+}
+
+
+//added in 2022_07_06
+
+object triplex_line {
+     name meter5_tl_house;
+     from meter5_house_node;
+     to meter5_house_meter;
+     phases AS;
+     length 10000;
+     configuration triplex_line_config;
+}
+
+object triplex_meter {     
+     name meter5_house_meter;
+     phases AS;
+     nominal_voltage 124.00;     
+} 
+
+object house {
+     name meter5_house;
+     parent meter5_house_meter;
+     thermal_integrity_level LITTLE;
+     hvac_power_factor 0.97;
+     cooling_COP 3.90;
+     floor_area 1040;
+	 cooling_setpoint 75;
+	 thermostat_deadband 2;
+	 air_temperature 72.5;
+
+     object ZIPload {
+          schedule_skew -685;
+          base_power LIGHTS*1.8752;
+          power_fraction 0.600000;
+          impedance_fraction 0.400000;
+          current_fraction 0.000000;
+          power_pf -0.780;
+          current_pf 0.420;
+          impedance_pf -0.880;
+          heat_fraction 0.91;
+     };
+     object ZIPload {
+          schedule_skew -685;
+          base_power CLOTHESWASHER*0.4354;
+          power_fraction 1.000000;
+          impedance_fraction 0.000000;
+          current_fraction 0.000000;
+          power_pf 0.970;
+          current_pf 0.970;
+          impedance_pf 0.970;
+          heat_fraction 0.70;
+     };
+     object ZIPload {
+          schedule_skew -685;
+          base_power REFRIGERATOR*0.7763;
+          power_fraction 1.000000;
+          impedance_fraction 0.000000;
+          current_fraction 0.000000;
+          power_pf 0.970;
+          current_pf 0.970;
+          impedance_pf 0.970;
+          heat_fraction 0.86;
+     };
+     object ZIPload {
+          schedule_skew -685;
+          base_power DRYER*1.0019;
+          power_fraction 0.100000;
+          impedance_fraction 0.800000;
+          current_fraction 0.100000;
+          power_pf 0.900;
+          current_pf 0.900;
+          impedance_pf 1.000;
+          heat_fraction 0.77;
+     };
+     object ZIPload {
+          schedule_skew -685;
+          base_power FREEZER*0.9110;
+          power_fraction 1.000000;
+          impedance_fraction 0.000000;
+          current_fraction 0.000000;
+          power_pf 0.970;
+          current_pf 0.970;
+          impedance_pf 0.970;
+          heat_fraction 0.80;
+     };
+     object ZIPload {
+          schedule_skew -685;
+          base_power RANGE*1.0590;
+          power_fraction 0.000000;
+          impedance_fraction 1.000000;
+          current_fraction 0.000000;
+          power_pf 0.000;
+          current_pf 0.000;
+          impedance_pf 1.000;
+          heat_fraction 0.86;
+     };
+     object ZIPload {
+          schedule_skew -685;
+          base_power MICROWAVE*0.6381;
+          power_fraction 1.000000;
+          impedance_fraction 0.000000;
+          current_fraction 0.000000;
+          power_pf 0.970;
+          current_pf 0.970;
+          impedance_pf 0.970;
+          heat_fraction 0.94;
+     };
+}
+
+object triplex_line {
+     name meter5_tl_batt;
+     from meter5_house_node;
+     to meter5_batt_meter;
+     phases AS;
+     length 10;
+     configuration triplex_line_config;
+}
+object triplex_meter {     
+     name meter5_batt_meter;
+     phases AS;
+     nominal_voltage 124.00;     
+} 
+
+object inverter {
+name meter5_batt_inv;
+generator_status ONLINE;
+parent meter5_batt_meter;
+inverter_efficiency .95;
+inverter_type FOUR_QUADRANT;
+rated_power 3000; //Per phase rating
+generator_mode CONSTANT_PQ;
+four_quadrant_control_mode CONSTANT_PQ;
+P_Out 0;
+Q_Out 0;
+}
+
+object battery {
+name meter5_batt;
+parent meter5_batt_inv;
+battery_type LI_ION;
+use_internal_battery_model TRUE;
+power_factor 1.0;
+generator_mode SUPPLY_DRIVEN;
+V_Max 260;
+I_Max 15;
+E_Max 7000;
+battery_capacity 8000;
+base_efficiency 1;
+power_type DC;
+generator_status ONLINE;
+state_of_charge 0.5;
+}
+
+
+
+object triplex_line {
+     name meter6_tl_solar;
+     from meter6_house_node;
+     to meter6_solar_meter;
+     phases AS;
+     length 10;
+     configuration triplex_line_config;
+}
+
+object triplex_meter {     
+     name meter6_solar_meter;
+     phases AS;
+     nominal_voltage 124.00;     
+} 
+
+object inverter {
+	name meter6_solar_inv;
+	phases AS;
+	parent meter6_solar_meter;
+	generator_status ONLINE;
+	inverter_type FOUR_QUADRANT;
+    four_quadrant_control_mode CONSTANT_PF;
+    generator_mode SUPPLY_DRIVEN;
+    inverter_efficiency .95;
+	rated_power 6000;
+}
+
+object solar {
+	name meter6_solar;
+	phases AS;
+	parent meter6_solar_inv;
+	generator_status ONLINE;
+	generator_mode SUPPLY_DRIVEN;
+	panel_type SINGLE_CRYSTAL_SILICON;
+	area 500 ft^2;
+	tilt_angle 47.0;
+	efficiency 0.135;
+	orientation_azimuth 180; //equator-facing (South)
+	orientation FIXED_AXIS;
+	SOLAR_TILT_MODEL SOLPOS;
+	SOLAR_POWER_MODEL FLATPLATE;
+}
+
+object triplex_meter {     
+     name meter6_house_node;
+     phases AS;
+     nominal_voltage 124.00;     
+} 
+
+object transformer {
+     name meter6_house_trans;
+     phases AS;
+     from meter6;
+     to meter6_house_node;
+     configuration house_transformer;
+}
+
+object triplex_line {
+     name meter6_tl_house;
+     from meter6_house_node;
+     to meter6_house_meter;
+     phases AS;
+     length 10000;
+     configuration triplex_line_config;
+}
+
+object triplex_meter {     
+     name meter6_house_meter;
+     phases AS;
+     nominal_voltage 124.00;     
+} 
+
+object house {
+     name meter6_house;
+     parent meter6_house_meter;
+     thermal_integrity_level LITTLE;
+     hvac_power_factor 0.97;
+     cooling_COP 3.90;
+     floor_area 1040;
+	 cooling_setpoint 75;
+	 thermostat_deadband 2;
+	 air_temperature 72.5;
+
+     object ZIPload {
+          schedule_skew -685;
+          base_power LIGHTS*1.8752;
+          power_fraction 0.600000;
+          impedance_fraction 0.400000;
+          current_fraction 0.000000;
+          power_pf -0.780;
+          current_pf 0.420;
+          impedance_pf -0.880;
+          heat_fraction 0.91;
+     };
+     object ZIPload {
+          schedule_skew -685;
+          base_power MICROWAVE*0.6381;
+          power_fraction 1.000000;
+          impedance_fraction 0.000000;
+          current_fraction 0.000000;
+          power_pf 0.970;
+          current_pf 0.970;
+          impedance_pf 0.970;
+          heat_fraction 0.94;
+     };
+}
+//added in 2022_09_07
+
+
+
+
+object multi_recorder{
+	name glm_0_data_in_need;
+	file glm_0_data_in_need.csv;
+	interval 1800;
+	property meter5_batt_inv:VA_Out.real, meter5_batt:state_of_charge, meter5_house_node:measured_real_power, meter5_house_node:measured_real_energy;
+}
+
+
